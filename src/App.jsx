@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import '../style.css'
+import Movie from './components/ListOfMovies'
 
 const PREFIX = 'https://www.omdbapi.com/?'
 const API_KEY = '91044962'
@@ -50,25 +51,7 @@ export default function Home () {
       </header>
 
       <main>
-        {
-          movies
-            ? (
-              <ul>
-                {
-                movies.map((el) =>
-                  (
-                    <li key={el.imdbID}>
-                      <h3>{el.Title}</h3>
-                      <p>{el.Year}</p>
-                      <img src={el.Poster} alt={el.Title} />
-                    </li>
-                  )
-                )
-              }
-              </ul>
-              )
-            : (<p>no se han encontrado películas</p>)
-        }
+        <Movie movies={movies} />
       </main>
     </div>
   )
