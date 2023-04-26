@@ -3,7 +3,7 @@ import { useSearch } from './hooks/useSearch'
 import '../app.css'
 
 export default function Home () {
-  const { movies, setSearch } = useSearch()
+  const { movies, setSearch, loading } = useSearch()
 
   function handleSubmit (e) {
     e.preventDefault()
@@ -22,7 +22,7 @@ export default function Home () {
       </header>
 
       <main>
-        <Movie movies={movies} />
+        {loading ? <p>cargando...</p> : <Movie movies={movies} />}
       </main>
     </div>
   )

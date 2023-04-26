@@ -2,7 +2,7 @@ const PREFIX = 'https://www.omdbapi.com/?'
 const API_KEY = '91044962'
 
 export default function getMovies ({ search }) {
-  if (!search) return
+  if (search === '') return null
 
   const MOVIES_URL = `${PREFIX}&apikey=${API_KEY}&s=${search}`
 
@@ -11,10 +11,9 @@ export default function getMovies ({ search }) {
       return res.json()
     })
     .then(res => {
-      if (res.ok) throw new Error('no se ha encontrado la película')
       return res.Search
     })
-    .catch(err => {
-      console.log(err)
+    .catch(() => {
+      throw new Error('Error al buscar la película')
     })
 }
