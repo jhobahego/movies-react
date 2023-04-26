@@ -1,6 +1,6 @@
-import '../style.css'
 import Movie from './components/ListOfMovies'
 import { useSearch } from './hooks/useSearch'
+import '../app.css'
 
 export default function Home () {
   const { movies, setSearch } = useSearch()
