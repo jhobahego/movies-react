@@ -1,18 +1,9 @@
-import { useEffect, useState } from 'react'
 import '../style.css'
 import Movie from './components/ListOfMovies'
-import getMovies from './services/GetMovies'
+import { useSearch } from './hooks/useSearch'
 
 export default function Home () {
-  const [search, setSearch] = useState()
-  const [movies, setMovies] = useState()
-
-  useEffect(() => {
-    const result = getMovies({ search })
-    if (result) {
-      result.then(movie => setMovies(movie))
-    }
-  }, [search])
+  const { movies, setSearch } = useSearch()
 
   function handleSubmit (e) {
     e.preventDefault()
