@@ -12,7 +12,7 @@ export default function Home () {
   }
 
   return (
-    <div>
+    <div className='page'>
       <header>
         <h1>Encuentra tu pelicula favorita</h1>
         <form onSubmit={handleSubmit}>
