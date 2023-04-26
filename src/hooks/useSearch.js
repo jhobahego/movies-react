@@ -6,10 +6,11 @@ export function useSearch () {
   const [movies, setMovies] = useState()
 
   useEffect(() => {
-    const result = getMovies({ search })
-    if (result) {
-      result.then(movie => setMovies(movie))
-    }
+    if (!search) return
+    getMovies({ search })
+      .then(res => {
+        setMovies(res)
+      })
   }, [search])
 
   return { search, setSearch, movies }
