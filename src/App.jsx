@@ -1,34 +1,14 @@
 import { useEffect, useState } from 'react'
 import '../style.css'
 import Movie from './components/ListOfMovies'
-
-const PREFIX = 'https://www.omdbapi.com/?'
-const API_KEY = '91044962'
+import getMovies from './services/GetMovies'
 
 export default function Home () {
   const [search, setSearch] = useState()
   const [movies, setMovies] = useState()
 
-  const getMovies = () => {
-    if (!search) return
-
-    const MOVIES_URL = `${PREFIX}&apikey=${API_KEY}&s=${search}`
-
-    return fetch(MOVIES_URL)
-      .then(res => {
-        return res.json()
-      })
-      .then(res => {
-        if (res.ok) throw new Error('no se ha encontrado la película')
-        return res.Search
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
   useEffect(() => {
-    const result = getMovies()
+    const result = getMovies({ search })
     if (result) {
       result.then(movie => setMovies(movie))
     }
