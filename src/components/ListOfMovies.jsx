@@ -23,7 +23,7 @@ function NoResultsMovie () {
 }
 
 export default function Movie ({ movies }) {
-  const hasMovies = movies !== undefined
+  const hasMovies = movies?.length > 0
 
   return (
     hasMovies

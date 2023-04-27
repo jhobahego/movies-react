@@ -1,21 +1,33 @@
-import { useState, useEffect } from 'react'
-import getMovies from '../services/getMovies'
+import { useState, useEffect, useRef } from 'react'
 
 export function useSearch () {
-  const [search, setSearch] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [movies, setMovies] = useState()
+  const [search, updateSearch] = useState('')
+  const [error, setError] = useState(null)
+  const isFirstInput = useRef(true)
 
   useEffect(() => {
-    if (!search) return
-    setLoading(true)
-    getMovies({ search })
-      .then(res => {
-        setMovies(res)
-      }).finally(
-        setLoading(false)
-      )
+    if (isFirstInput.current) {
+      isFirstInput.current = search === ''
+      return
+    }
+
+    if (search === '') {
+      setError('No se puede buscar una película vacía')
+      return
+    }
+
+    if (search.match(/^\d+$/)) {
+      setError('No se puede buscar una película con un número')
+      return
+    }
+
+    if (search.length < 3) {
+      setError('La búsqueda debe tener al menos 3 caracteres')
+      return
+    }
+
+    setError(null)
   }, [search])
 
-  return { search, setSearch, movies, loading }
+  return { search, updateSearch, error }
 }

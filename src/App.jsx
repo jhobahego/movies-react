@@ -1,20 +1,30 @@
-import Movie from './components/ListOfMovies'
-import { useSearch } from './hooks/useSearch'
+import { useCallback } from 'react'
+import Movie from './components/ListOfMovies.jsx'
+import { useSearch } from './hooks/useSearch.js'
+import debounce from 'just-debounce-it'
+import useMovies from './hooks/useMovies.js'
 import '../app.css'
-import getMovies from './services/getMovies'
 
 export default function Home () {
-  const { movies, setSearch, search, loading } = useSearch()
+  const { search, updateSearch, error } = useSearch()
+  const { movies, searchMovies, loading } = useMovies({ search })
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    getMovies({ search })
+  const debouncedSearchMovies = useCallback(
+    debounce(search => {
+      searchMovies({ search })
+    }, 300)
+    , [searchMovies]
+  )
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    searchMovies({ search })
   }
 
   const handleChange = (event) => {
     const newSearch = event.target.value
-    setSearch(newSearch)
-    getMovies({ search })
+    updateSearch(newSearch)
+    debouncedSearchMovies(newSearch)
   }
 
   return (
@@ -22,7 +32,12 @@ export default function Home () {
       <header>
         <h1>Encuentra tu pelicula favorita</h1>
         <form onSubmit={handleSubmit}>
-          <input onChange={handleChange} value={search} placeholder='Avengers, spiderman, black phanter...' autoFocus />
+          <input
+            style={{
+              border: '1px solid transparent',
+              borderColor: error ? 'red' : 'transparent'
+            }} onChange={handleChange} value={search} placeholder='Avengers, spiderman, black phanter...' autoFocus
+          />
           <button>Buscar</button>
         </form>
       </header>
